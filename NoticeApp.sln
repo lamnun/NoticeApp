@@ -7,7 +7,13 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "NoticeApp.SqlServer", "Noti
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoticeApp.Modells", "NoticeApp.Modells\NoticeApp.Modells.csproj", "{DB61E9CD-F112-4674-ACE6-4EE0E94E861F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoticeApp.Models.Tests", "NoticeApp.Models.Tests\NoticeApp.Models.Tests.csproj", "{1A13110C-8161-4581-9802-10001AEE3E0E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoticeApp.Models.Tests", "NoticeApp.Models.Tests\NoticeApp.Models.Tests.csproj", "{1A13110C-8161-4581-9802-10001AEE3E0E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApp", "WebApp", "{AB7B64EA-6B69-49E4-8869-387AC0E3C197}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApi", "WebApi", "{BD428A64-665C-4654-A1FF-8C6988FA03C4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoticeApp.Apis", "NoticeApp.Apis\NoticeApp.Apis.csproj", "{D54936FD-B0FF-4C64-B1D2-AD1D969FFFAE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,9 +35,16 @@ Global
 		{1A13110C-8161-4581-9802-10001AEE3E0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A13110C-8161-4581-9802-10001AEE3E0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A13110C-8161-4581-9802-10001AEE3E0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D54936FD-B0FF-4C64-B1D2-AD1D969FFFAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D54936FD-B0FF-4C64-B1D2-AD1D969FFFAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D54936FD-B0FF-4C64-B1D2-AD1D969FFFAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D54936FD-B0FF-4C64-B1D2-AD1D969FFFAE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D54936FD-B0FF-4C64-B1D2-AD1D969FFFAE} = {BD428A64-665C-4654-A1FF-8C6988FA03C4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EDB3DA14-C317-490C-8A78-3E6ABF86526C}

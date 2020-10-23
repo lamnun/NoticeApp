@@ -1,8 +1,11 @@
 ﻿using Dul.Domain.Common;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -44,39 +47,118 @@ namespace NoticeApp.Modells
         }
 
         //출력
-        public Task<List<Notice>> GetAllAsync()
+        public async Task<List<Notice>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Notices.OrderByDescending(m => m.Id)
+                //.Include(m => m.NoticesComments)
+                .ToListAsync();
         }
 
         //상세
-        public Task<Notice> GetByIdAsync(int id)
+        public async Task<Notice> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+           return await _context.Notices
+                //.Include(m => m.NoticesComments)
+                .SingleOrDefaultAsync(m => m.Id == id);
+
         }
 
         //수정
-        public Task<bool> EditAsync(Notice model)
+        public async Task<bool> EditAsync(Notice model)
         {
-            throw new NotImplementedException();
+            _context.Notices.Attach(model);
+            _context.Entry(model).State = EntityState.Modified;
+            try
+            {
+                return (await _context.SaveChangesAsync() > 0 ? true : false); // 반환값이 0 보다 크면 true, 아니면 false
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"에러 발생({nameof(EditAsync)}): {e.Message}");
+            }
+
+            return false;
         }
 
+
         //삭제
-        public Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var model = await _context.Notices.SingleOrDefaultAsync(m => m.Id == id);
+            _context.Remove(model);
+
+            try
+            {
+                return (await _context.SaveChangesAsync() > 0 ? true : false);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"에러 발생({nameof(DeleteAsync)}): {e.Message}");
+            }
+
+            return false;
         }
 
         //페이징
-        public Task<PagingResult<Notice>> GetAllAsync(int pageIndex, int pageSize)
+        public async Task<PagingResult<Notice>> GetAllAsync(int pageIndex, int pageSize)
         {
-            throw new NotImplementedException();
+            var totalRecords = await _context.Notices.CountAsync();
+            var models = await _context.Notices
+                .OrderByDescending(m => m.Id)
+                //.Include(m => m.NoticesComments)
+                .Skip(pageIndex * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return new PagingResult<Notice>(models, totalRecords);
         }
 
         //부모
-        public Task<PagingResult<Notice>> GetAllByParentIdAsync(int pageIndex, int pageSize, int parentId)
+        public async Task<PagingResult<Notice>> GetAllByParentIdAsync(int pageIndex, int pageSize, int parentId)
         {
-            throw new NotImplementedException();
+            var totalRecords = await _context.Notices.Where( m => m.ParentId == parentId).CountAsync();
+            var models = await _context.Notices
+                .Where(m => m.ParentId == parentId)
+                .OrderByDescending(m => m.Id)
+                //.Include(m => m.NoticesComments)
+                .Skip(pageIndex * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return new PagingResult<Notice>(models, totalRecords);
+        }
+
+        //상태 (공지 고정 상태?)
+        public async Task<Tuple<int, int>> GetStatus(int parentId)
+        {
+            var totalRecords = await _context.Notices.Where(m => m.ParentId == parentId).CountAsync();
+            var pinnedRecode = await _context.Notices.Where(m => m.ParentId == parentId && m.IsPinned == true).CountAsync();
+
+            return new Tuple<int, int>(pinnedRecode, totalRecords );  // (2, 10) 10개중 2개가 고정된 값이다...ex
+        }
+
+
+        //삭제 by Parent 
+        public async Task<bool> DeleteAllByParentId(int parentId)
+        {
+            try
+            {
+                var models = await _context.Notices.Where(m => m.ParentId == parentId).ToListAsync();
+
+                foreach (var model in models)
+                {
+                    _context.Notices.Remove(model);
+                }
+                return (await _context.SaveChangesAsync() > 0 ? true : false);
+            }
+            catch (Exception e)
+            {
+
+                _logger.LogError($"에러 발생({nameof(DeleteAllByParentId)}): {e.Message}");
+
+            }
+
+            return false;
         }
     }
 }
