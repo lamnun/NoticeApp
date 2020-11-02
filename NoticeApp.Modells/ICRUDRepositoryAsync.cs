@@ -10,7 +10,7 @@ namespace NoticeApp.Modells
     /// <typeparam name="T"></typeparam>
     public interface ICRUDRepositoryAsync<T>
     {
-        Task<T> Addsync(T model); //입력
+        Task<T> AddAsync(T model); //입력
         Task<List<T>> GetAllAsync(); //출력
         Task<T> GetByIdAsync(int id); //상세
         Task<bool> EditAsync(T model); //수정

@@ -29,20 +29,17 @@ namespace NoticeApp.Modells
 
 
         //입력
-        public async Task<Notice> Addsync(Notice model)
+        public async Task<Notice> AddAsync(Notice model)
         {
             _context.Notices.Add(model);
             try
             {
                 await _context.SaveChangesAsync();
-
             }
             catch (Exception e)
             {
-
-                _logger.LogError($"에러 발생({nameof(Addsync)}): {e.Message}");
+                _logger.LogError($"에러 발생({nameof(AddAsync)}): {e.Message}");
             }
-
             return model;
         }
 

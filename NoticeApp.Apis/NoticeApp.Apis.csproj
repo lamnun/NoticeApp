@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <Folder Include="Apis\" />
+    <Folder Include="NewFolder\" />
   </ItemGroup>
 
 

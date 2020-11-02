@@ -38,7 +38,7 @@ namespace NoticeApp.Modells
         public DateTime? Created { get; set; }
 
         //수정자
-        public string MoidfiedBy { get; set; }
+        public string ModifiedBy { get; set; }
 
         //수정일
         public DateTime? Modified { get; set; }
